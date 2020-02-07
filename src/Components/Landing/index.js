@@ -6,12 +6,12 @@ const Landing = () => {
   const [posts, setPosts] = useState(false);
 
   const fetchSub = async subName => {
-    const sub = await fetchData(`https://www.reddit.com/r/${subName}/.json`);
+    const sub = await fetchData(`https://www.reddit.com/r/${subName}/.json?`);
     setPosts(sub.data.children);
   };
 
   useEffect(() => {
-    fetchSub("ProgrammingHumor");
+    fetchSub("EarthPorn");
   }, []);
 
   const handleError = e => {
