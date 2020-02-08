@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import "./Landing.scss";
-import Feed from '../Feed/index'
+import FeedController from '../Feed/FeedController'
 import Form from '../Form/index'
 
 const Landing = () => {
@@ -8,8 +8,8 @@ const Landing = () => {
     const [sub, setSub] = useState("memes")
   return(
       <>
-      <Form set={setSub}/>
-      <Feed sub={sub}/>
+      {/* <Form set={setSub}/> */}
+      <FeedController />
       </>
   )
 };
