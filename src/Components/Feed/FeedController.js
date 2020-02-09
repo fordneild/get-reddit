@@ -8,7 +8,7 @@ const FeedController = () => {
     //on load, set posts
 
     useEffect(() => {
-        const defaultSubs = ['memes','funny','AdviceAnimals','MemeEconomy','ComedyCemetery','dankmemes','BlackPeopleTwitter']
+        const defaultSubs = ['memes','funny','AdviceAnimals','MemeEconomy','ComedyCemetery','dankmemes','BlackPeopleTwitter','ProgrammerHumor']
         const loadPosts = async (subs) => {
             const posts = await Promise.all(subs.map(async (sub, index) => {
                 return await fetchSubPosts(sub)

@@ -3,17 +3,14 @@
   margin-bottom: 30px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   overflow: hidden;
   display: flex;
-  background-color: #ff4500;
-  padding: 10px 0px;
-  border-radius: 50px;
   border-radius: 25px;
   background: #ffffff;
   box-shadow: 14px 14px 28px #cccccc, -14px -14px 28px #ffffff;
   padding: 20px;
+  box-sizing: border-box;
   img {
     width: 100%;
   }
