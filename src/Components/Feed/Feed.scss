@@ -1,29 +1,6 @@
 .posts{
     margin: 10vw auto;
-    overflow-y: scroll;
-    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     width: 440px;
-    .post{
-        width: 100%;
-        margin-bottom: 30px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-        max-height: 80vh;
-        height: 80vh;
-        display: flex;
-        background-color: white;
-        
-        img{
-            max-height:100%; 
-            max-width:100%;
-            // width: 100%;
-            // height: 100%;
-            // object-fit: contain;
-        }
-    }
 }
