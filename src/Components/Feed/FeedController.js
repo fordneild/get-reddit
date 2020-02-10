@@ -6,9 +6,6 @@ const FeedController = () => {
   //keep track of all posts we want to show to the user
   const [posts, setPosts] = useState([]);
 
-  const addPosts = newPosts => {
-    setPosts(prevPosts => [...prevPosts, ...newPosts]);
-  };
 
   //on load, set posts
   useEffect(() => {
@@ -22,36 +19,47 @@ const FeedController = () => {
       "ProgrammerHumor",
       "ImGoingToHellForThis"
     ];
-    const defaultInstgramSearches = ["boobs"];
+    const defaultInstgramSearches = ["memes", "dankmemes"];
+    const addPosts = newPosts => {
+      setPosts(prevPosts => {
+        const posts = [...prevPosts, ...newPosts]
+        shuffleArray(posts)
+        return posts
+      });
+    };
     const loadSubredditPosts = async subs => {
       const redditPosts = await Promise.all(
         subs.map(async sub => {
           return await fetchSubPosts(sub);
         })
       );
-      const flatPosts = [].concat(...redditPosts);
-      shuffleArray(flatPosts);
+      const flatPosts = [].concat(...redditPosts).map(post => {
+        return {
+          // title: post.title,
+          url: post.url,
+          pipe: `r/${post.subreddit}`
+        };
+      });
       addPosts(flatPosts);
     };
+
     const loadInstagramMemes = async terms => {
       const instas = await Promise.all(
         terms.map(async term => {
           return await fetchInstagramPosts(term);
         })
       );
-      console.log(instas)
       let cleanedInstas = [].concat(...instas).map(post => {
         return {
           title: null,
-          url: post
+          url: post.display_url,
+          pipe: post.pipe
         };
       });
-      shuffleArray(cleanedInstas);
-      console.log(cleanedInstas)
       addPosts(cleanedInstas);
     };
 
-    //loadInstagramMemes(defaultInstgramSearches);
+    loadInstagramMemes(defaultInstgramSearches);
     loadSubredditPosts(defaultSubs)
   }, []);
 
@@ -73,7 +81,9 @@ const FeedController = () => {
           post => post.node.__typename==="GraphImage"
       )
       .map(
-        post => post.node.display_url
+        post => {
+          post.node.pipe=`#${term}`;
+          return post.node }
       );
     } catch (e) {
       console.log(e);

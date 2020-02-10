@@ -46,7 +46,7 @@ const Feed = ({ getPosts = () => {} }) => {
     if (posts) {
       return posts
         .map((post, index) => {
-            return <RedditPost key={index} title={post.title} src={post.url} />;
+            return <RedditPost key={index} pipe={post.subreddit || post.pipe} title={post.title} src={post.url} />;
         });
     }
   };
