@@ -1,8 +1,8 @@
 import React from 'react'
 
-import './RedditPost.scss'
+import './Post.scss'
 
-const RedditPost = ({pipe="memes",src, title}) => {
+const Post = ({pipe ,src, title}) => {
     return(
         <div className="post">
             {title && <h1>{title}</h1>}
@@ -19,4 +19,4 @@ const RedditPost = ({pipe="memes",src, title}) => {
     )
 }
 
-export default RedditPost
+export default Post

@@ -34,7 +34,6 @@ const FeedController = () => {
       );
       const flatPosts = [].concat(...redditPosts).map(post => {
         return {
-          // title: post.title,
           url: post.url,
           pipe: `r/${post.subreddit}`
         };

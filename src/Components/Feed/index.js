@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { debounce } from "lodash";
 import "./Feed.scss";
-import RedditPost from "../RedditPost/index";
+import Post from "../Post/index";
 
 const Feed = ({ getPosts = () => {} }) => {
   const INTIAL_POSTS_NUM = 10;
@@ -46,7 +46,7 @@ const Feed = ({ getPosts = () => {} }) => {
     if (posts) {
       return posts
         .map((post, index) => {
-            return <RedditPost key={index} pipe={post.subreddit || post.pipe} title={post.title} src={post.url} />;
+            return <Post key={index} pipe={post.subreddit || post.pipe} title={post.title} src={post.url} />;
         });
     }
   };
