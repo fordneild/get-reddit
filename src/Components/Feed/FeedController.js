@@ -16,7 +16,7 @@ const FeedController = () => {
       "ProgrammerHumor",
       "ImGoingToHellForThis"
     ];
-    // const defaultInstgramSearches = ["edgymemes","spongebobmemes"];
+    const defaultInstgramSearches = ["edgymemes","spongebobmemes"];
     const defaultInstgramSearches = [];
     const defaultInstagramAccounts = ["thefatjewish","me_irl_bot_","salsa_69memes.v3","surrealslapps","trashcanpaul"]
     const addPosts = newPosts => {
@@ -61,7 +61,7 @@ const FeedController = () => {
     };
 
     loadInstagramMemes(defaultInstgramSearches,defaultInstagramAccounts);
-    //loadSubredditPosts(defaultSubs);
+    loadSubredditPosts(defaultSubs);
   }, []);
 
   const shuffleArray = array => {
