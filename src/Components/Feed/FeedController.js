@@ -6,25 +6,24 @@ const FeedController = () => {
   //keep track of all posts we want to show to the user
   const [posts, setPosts] = useState([]);
 
-
   //on load, set posts
   useEffect(() => {
     const defaultSubs = [
       "memes",
       "funny",
       "AdviceAnimals",
-      "MemeEconomy",
       "ComedyCemetery",
       "dankmemes",
       "ProgrammerHumor",
       "ImGoingToHellForThis"
     ];
-    const defaultInstgramSearches = ["memes", "dankmemes"];
+    const defaultInstgramSearches = ["edgymemes","spongebobmemes"];
+    const defaultInstagramAccounts = ["thefatjewish","me_irl_bot_","mytherapistsays","salsa_69memes.v3"]
     const addPosts = newPosts => {
       setPosts(prevPosts => {
-        const posts = [...prevPosts, ...newPosts]
-        shuffleArray(posts)
-        return posts
+        const posts = [...prevPosts, ...newPosts];
+        shuffleArray(posts);
+        return posts;
       });
     };
     const loadSubredditPosts = async subs => {
@@ -43,11 +42,13 @@ const FeedController = () => {
       addPosts(flatPosts);
     };
 
-    const loadInstagramMemes = async terms => {
+    const loadInstagramMemes = async (terms, accounts) => {
       const instas = await Promise.all(
-        terms.map(async term => {
-          return await fetchInstagramPosts(term);
-        })
+        [...terms.map(async term => {
+          return await fetchInstagramHashTagPosts(term);
+        }),...accounts.map(async account => {
+          return await fetchInstagramAccountPosts(account);
+        })]
       );
       let cleanedInstas = [].concat(...instas).map(post => {
         return {
@@ -59,8 +60,8 @@ const FeedController = () => {
       addPosts(cleanedInstas);
     };
 
-    loadInstagramMemes(defaultInstgramSearches);
-    loadSubredditPosts(defaultSubs)
+    loadInstagramMemes(defaultInstgramSearches,defaultInstagramAccounts);
+    loadSubredditPosts(defaultSubs);
   }, []);
 
   const shuffleArray = array => {
@@ -72,19 +73,33 @@ const FeedController = () => {
     }
   };
 
-  const fetchInstagramPosts = async term => {
+  const fetchInstagramHashTagPosts = async term => {
     const page = await fetchData(
       `https://www.instagram.com/explore/tags/${term}/?__a=1`
     );
     try {
-      return page.graphql.hashtag.edge_hashtag_to_media.edges.filter(
-          post => post.node.__typename==="GraphImage"
-      )
-      .map(
-        post => {
-          post.node.pipe=`#${term}`;
-          return post.node }
-      );
+      return page.graphql.hashtag.edge_hashtag_to_media.edges
+        .filter(post => post.node.__typename === "GraphImage")
+        .map(post => {
+          post.node.pipe = `#${term}`;
+          return post.node;
+        });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const fetchInstagramAccountPosts = async (account, num) => {
+    const page = await fetchData(`https://www.instagram.com/${account}/?__a=1`);
+    try {
+      let posts = page.graphql.user.edge_owner_to_timeline_media.edges
+        .filter(post => post.node.__typename === "GraphImage")
+        .map(post => {
+          post.node.pipe = `@${account}`;
+          return post.node;
+        });
+      console.log("account", posts);
+      return posts;
     } catch (e) {
       console.log(e);
     }
