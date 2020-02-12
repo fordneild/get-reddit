@@ -12,8 +12,8 @@ const Nav = () => {
         <>
         <div className="nav--container">
             <ul className="nav">
-                <li onClick={toggleShowSettings} className="tab"><i class='fas fa-home' ></i></li>
-                <li onClick={toggleShowSettings} className="tab"><i class='fas fa-cog'></i></li>
+                <li onClick={toggleShowSettings} className="tab"><i className='fas fa-home' ></i></li>
+                <li onClick={toggleShowSettings} className="tab"><i className='fas fa-cog'></i></li>
             </ul>
         </div>
         <Settings show={showSettings}/>

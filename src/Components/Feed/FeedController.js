@@ -1,24 +1,17 @@
 import React, { useState, useEffect } from "react";
 import Feed from "./index";
-import fetchData from "../../Services/useFetch";
+import redditFetch from "../../Services/redditFetch"
+import instagramFetch from "../../Services/instagramFetch"
+import defaultInstagram from "../../assets/defaultInstagram"
+import defaultSubreddits from "../../assets/defaultSubreddits"
+
 
 const FeedController = () => {
-  //keep track of all posts we want to show to the user
+  //keep track of all posts we want to show to the user eventually
   const [posts, setPosts] = useState([]);
 
-  //on load, set posts
+  //on mount, load urls of images
   useEffect(() => {
-    const defaultSubs = [
-      "memes",
-      "funny",
-      "AdviceAnimals",
-      "dankmemes",
-      "ProgrammerHumor",
-      "ImGoingToHellForThis",
-      "comedyheaven"
-    ];
-    const defaultInstgramSearches = ["edgymemes","spongebobmemes"];
-    const defaultInstagramAccounts = ["thefatjewish","me_irl_bot_","salsa_69memes.v3","surrealslapps","trashcanpaul"]
     const addPosts = newPosts => {
       setPosts(prevPosts => {
         const posts = [...prevPosts, ...newPosts];
@@ -26,41 +19,19 @@ const FeedController = () => {
         return posts;
       });
     };
-    const loadSubredditPosts = async subs => {
-      const redditPosts = await Promise.all(
-        subs.map(async sub => {
-          return await fetchSubPosts(sub);
-        })
-      );
-      const flatPosts = [].concat(...redditPosts).map(post => {
-        return {
-          url: post.url,
-          pipe: `r/${post.subreddit}`
-        };
-      });
-      addPosts(flatPosts);
-    };
 
-    const loadInstagramMemes = async (terms, accounts) => {
-      const instas = await Promise.all(
-        [...terms.map(async term => {
-          return await fetchInstagramHashTagPosts(term);
-        }),...accounts.map(async account => {
-          return await fetchInstagramAccountPosts(account);
-        })]
-      );
-      let cleanedInstas = [].concat(...instas).map(post => {
-        return {
-          title: null,
-          url: post.display_url,
-          pipe: post.pipe
-        };
-      });
-      addPosts(cleanedInstas);
-    };
+    const loadReddit = async (subreddits) => {
+      const redditPosts = await redditFetch(subreddits)
+      addPosts(redditPosts)
+    }
 
-    loadInstagramMemes(defaultInstgramSearches,defaultInstagramAccounts);
-    loadSubredditPosts(defaultSubs);
+    const loadInstagram = async ({terms, accounts}) => {
+      const instaPosts = await instagramFetch(terms,accounts)
+      addPosts(instaPosts)
+    }
+
+    loadInstagram(defaultInstagram)
+    loadReddit(defaultSubreddits)
   }, []);
 
   const shuffleArray = array => {
@@ -70,47 +41,6 @@ const FeedController = () => {
       array[i] = array[j];
       array[j] = temp;
     }
-  };
-
-  const fetchInstagramHashTagPosts = async term => {
-    const page = await fetchData(
-      `https://www.instagram.com/explore/tags/${term}/?__a=1`
-    );
-    try {
-      return page.graphql.hashtag.edge_hashtag_to_media.edges
-        .filter(post => post.node.__typename === "GraphImage")
-        .map(post => {
-          post.node.pipe = `#${term}`;
-          return post.node;
-        });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const fetchInstagramAccountPosts = async (account, num) => {
-    const page = await fetchData(`https://www.instagram.com/${account}/?__a=1`);
-    try {
-      let posts = page.graphql.user.edge_owner_to_timeline_media.edges
-        .filter(post => post.node.__typename === "GraphImage")
-        .map(post => {
-          post.node.pipe = `@${account}`;
-          return post.node;
-        });
-      console.log("account", posts);
-      return posts;
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const fetchSubPosts = async subName => {
-    const sub = await fetchData(`https://www.reddit.com/r/${subName}/.json?`);
-    return sub.data.children
-      .map(child => child.data)
-      .filter(post => {
-        return post && post.url && post.post_hint === "image";
-      });
   };
 
   const getPosts = n => {
