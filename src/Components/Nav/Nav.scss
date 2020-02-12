@@ -1,0 +1,31 @@
+.nav--container{
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    background-color: white;
+    border: 1px solid #cccccc;
+    
+    z-index: 1;
+    max-width: 440px;
+    .nav{
+        display: flex;
+        -webkit-padding-start: 0px;
+        justify-content: space-evenly;
+        .tab{
+            list-style-type: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background: #ffffff;
+            padding: 10px;
+            box-shadow: 14px 14px 28px #cccccc, -14px -14px 28px #ffffff;
+            cursor: pointer;
+            i{
+                font-size: 30px;
+            }
+        }
+    }
+}

@@ -1,0 +1,16 @@
+.settings--container{
+    width: 100%;
+    max-width: 440px;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    position: fixed;
+    min-height: 100vh;
+    max-height: 100vh;
+    overflow-y: scroll;
+    background-color: white;
+    transition: transform 200ms ease-in-out;
+    bottom: 0;
+    &.hide{
+        transform: translate(-50%,100%);
+    }
+}

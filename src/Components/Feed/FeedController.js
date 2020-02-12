@@ -14,10 +14,10 @@ const FeedController = () => {
       "AdviceAnimals",
       "dankmemes",
       "ProgrammerHumor",
-      "ImGoingToHellForThis"
+      "ImGoingToHellForThis",
+      "comedyheaven"
     ];
     const defaultInstgramSearches = ["edgymemes","spongebobmemes"];
-    //const defaultInstgramSearches = [];
     const defaultInstagramAccounts = ["thefatjewish","me_irl_bot_","salsa_69memes.v3","surrealslapps","trashcanpaul"]
     const addPosts = newPosts => {
       setPosts(prevPosts => {

@@ -1,10 +1,14 @@
 import React from 'react';
 import './App.css';
-import Landing from './Components/Landing/'
+import FeedController from './Components/Feed/FeedController'
+import Nav from './Components/Nav/index'
 
 function App() {
   return (
-    <Landing />
+    <>
+    <FeedController />
+    <Nav />
+    </>
   );
 }
 

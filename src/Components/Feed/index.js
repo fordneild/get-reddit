@@ -5,8 +5,8 @@ import Post from "../Post/index";
 
 const Feed = ({ getPosts = () => {} }) => {
   const INTIAL_POSTS_NUM = 10;
-  const REFRESH_POSTS_NUM = 10;
-  //maintain poses the user sees in the UI
+  const REFRESH_POSTS_NUM = 15;
+  //maintain posts the user sees in the UI
   const [posts, setPosts] = useState([]);
 
   //INTIAL POST LOADING
@@ -26,7 +26,7 @@ const Feed = ({ getPosts = () => {} }) => {
   const handleScroll = debounce(() => {
     if (
       window.innerHeight + window.scrollY >=
-      document.body.offsetHeight - 100
+      document.body.offsetHeight - 400
     ) {
       //load posts when we get near the bottom
       loadPosts(REFRESH_POSTS_NUM);
