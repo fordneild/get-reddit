@@ -3,9 +3,9 @@ import { debounce } from "lodash";
 import "./Feed.scss";
 import Post from "../Post/index";
 
-const Feed = ({ getPosts = () => {} }) => {
-  const INTIAL_POSTS_NUM = 10;
-  const REFRESH_POSTS_NUM = 15;
+const FeedView = ({ getPosts = () => {} }) => {
+  const INTIAL_POSTS_NUM = 4;
+  const REFRESH_POSTS_NUM = 3;
   //maintain posts the user sees in the UI
   const [posts, setPosts] = useState([]);
 
@@ -54,4 +54,4 @@ const Feed = ({ getPosts = () => {} }) => {
   return <div className="posts">{renderPosts()}</div>;
 };
 
-export default Feed;
+export default FeedView;

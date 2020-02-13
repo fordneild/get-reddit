@@ -1,17 +1,21 @@
 import fetchData from './useFetch'
+import defaultInstagram from "../assets/defaultInstagram"
+
 const fetchInstagramAccountPosts = async (account, num) => {
     const page = await fetchData(`https://www.instagram.com/${account}/?__a=1`);
     try {
       let posts = page.graphql.user.edge_owner_to_timeline_media.edges
         .filter(post => post.node.__typename === "GraphImage")
         .map(post => {
-          post.node.pipe = `@${account}`;
-          return post.node;
+          return {
+            title: null,
+            url: post.node.display_url,
+            pipe: `@${account}`
+          };
         });
-      console.log("account", posts);
       return posts;
     } catch (e) {
-      console.log(e);
+      return []
     }
   };
 
@@ -23,15 +27,19 @@ const fetchInstagramHashTagPosts = async term => {
       return page.graphql.hashtag.edge_hashtag_to_media.edges
         .filter(post => post.node.__typename === "GraphImage")
         .map(post => {
-          post.node.pipe = `#${term}`;
-          return post.node;
+          return {
+            title: null,
+            url: post.node.display_url,
+            pipe: `#${term}`
+          };
         });
     } catch (e) {
-      console.log(e);
+      return []
     }
   };
 
-const loadInstagramMemes = async (terms, accounts) => {
+const loadInstagramPosts = async () => {
+    const {terms, accounts} = defaultInstagram
     const instas = await Promise.all(
       [...terms.map(async term => {
         return await fetchInstagramHashTagPosts(term);
@@ -39,14 +47,9 @@ const loadInstagramMemes = async (terms, accounts) => {
         return await fetchInstagramAccountPosts(account);
       })]
     );
-    let cleanedInstas = [].concat(...instas).map(post => {
-      return {
-        title: null,
-        url: post.display_url,
-        pipe: post.pipe
-      };
-    });
+    let cleanedInstas = [].concat(...instas)
     return cleanedInstas
   };
 
-  export default loadInstagramMemes
+  export {fetchInstagramAccountPosts, fetchInstagramHashTagPosts}
+  export default loadInstagramPosts
